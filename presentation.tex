@@ -53,6 +53,14 @@
     Enfin, $\left( X_{t} \right)_{t\in T} $  est une famille de variable aléatoire indexée par $ T $.
   \end{block}
 \end{frame}
+\begin{frame}{Option Call}{Formule du pricing}
+  \begin{block}{Théorème fondamental du Pricing}
+    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, on voit bien que la valeur de l'option call sera de
+    \begin{equation} \label{tfp}
+      e^{-Tr}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
+    \end{equation}
+  \end{block}
+\end{frame}
 \begin{frame}{Mouvement Brownien}
   \begin{block}{Définition}
     Un processus $ B = (\varOmega, \mathcal{F}, \left(  X_{t} \right)_{t\in T}, \mathbb{P} ) $ à valeurs réelles est un mouvement brownien si
@@ -71,11 +79,11 @@
 % \end{frame}
 \begin{frame}{Le modèle de Black-Scholes}
   \begin{block}{Définition}
-    On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante
+    On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante pour M > 0
     \begin{equation}
       \begin{cases}
         dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{s} \\
-        X_{0} = 0
+        X_{0} = M
       \end{cases}
       \end{equation}
       est l'équation de Black-Scholes. \\
@@ -231,7 +239,7 @@
        \ln \left(\frac{X_{t}}{X_{0}} \right) = \left( \mu - \frac{\sigma^{2}}{2} \right) T + \sigma B_{T}
      \]
      \pause
-     \begin{equation} \label{lognor}
+     \begin{equation} \label{eq:9}
        X_{t} = \exp \left(  \left( \mu - \frac{\sigma^{2}}{2} \right) T + \sigma B_{T} \right)
      \end{equation}
    \end{frame}
@@ -239,6 +247,26 @@
      \begin{block}{Définition}
        Soit $Z \sim \mathcal{N}\left(0, 1 \right)$, et soient $\mu \in \mathbb{R}$ et $\sigma \in \mathbb{R}^{+}$, alors la variable définie par $ X = e^{\mu + \sigma Z}$ suit une loi log-normale.
      \end{block}
-     On reprend donc \label{lognor} pour voir que
+     On reprend donc $ \ref{eq:9} $ pour voir que $X_{T} \sim \log \mathcal{N} \left( \left( \mu - \frac{\sigma^{2}}{2} \right) T; \sigma \sqrt{T}  \right)$ \\
+     \pause
+     Tout ce qu'il reste à faire est alors de calculer $\mathbb{E}\left[\max(X_{t} - K; 0)e^{-tr}\right]$ où $ X_{t}$ suit une log-normale.
+
+   \end{frame}
+   \begin{frame}{Formule de Black-Scholes}
+     Nos calculs précédents nous donnent finalement la formule de Black-Scholes telle qu'étudiée en actuariat
+     \begin{block}{Théorème}
+       Dans le modèle de Black-Scholes, la valeur d'une option call est donné par la formule
+       \begin{equation}
+         X_{0}\mathcal{N}(d_{1}) - Ke^{-rT}\mathcal{N}(d_{2})
+       \end{equation}
+       où
+       \[
+         d_{1} = \frac{1}{\sigma \sqrt{T}} \left( \ln \left(\frac{X_{0}}{K} \right) + \left( r + \frac{\sigma^{2}}{2} \right)T \right)
+       \]
+       et
+       \[
+         d_{2} = d_{1} - \sigma \sqrt{T}
+       \]
+    \end{block}
    \end{frame}
 \end{document}
