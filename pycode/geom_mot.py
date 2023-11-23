@@ -33,7 +33,7 @@ mu = 0.1  # Drift
 sigma = 0.3  # Volatility
 S0 = 100.0  # Initial value
 steps = 100 # number of steps
-M = 5 # number of simulations
+M = 100 # number of simulations
 # Generate GBM path
 St = geometric_brownian_motion(T, mu, sigma, S0, steps, M)
 time = np.linspace(0, T, steps+1)

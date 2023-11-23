@@ -12,7 +12,16 @@
 \usetheme{Madrid}
 
 \newcommand{\indep}{\perp \!\!\! \perp}
-
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
 \begin{document}
 
 \frame{\titlepage}
@@ -20,29 +29,41 @@
 \begin{frame}{Table des matières}
   % \frametitle{Summary}
   \begin{enumerate}
-    \item Introduction au concept d'option call et posons le problème
+    \item Option Call
     \item Mouvement brownien et processus stochastique
     \item Modèle de Black-Scholes
     \item Retour au problème
     \item Intégrale d'Itô
     \item Formule d'Itô
+    \item Résolution de l'équation de Black-Scholes
   \end{enumerate}
 \end{frame}
-\begin{frame}{Option}
+\section{Option Call}
+\begin{frame}{Option Call}
+  \includegraphics[width=12cm]{imgs/strike.png}
+\end{frame}
+\begin{frame}{Option Call}
+  \includegraphics[width=12cm]{imgs/nostrike.png}
+\end{frame}
+\begin{frame}{Option Call}{Formule du pricing}
+\begin{block}{Théorème fondamental du Pricing}
+    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, on voit bien que la valeur de l'option call sera de
+    \begin{equation} \label{tfp}
+      e^{-Tr}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
+    \end{equation}
+  \end{block}
+  \end{frame}
+\begin{frame}{Option Call}
   \begin{block}{Definition}
-    Une \textbf{option call} est un produit dérivé, contrat entre deux parties, qui donne à l'acheteur le droit (le vendeur est en revanche tenu de se plier à la décision de l'acheteur) d'acheter une quantité donnée d'un actif sous-jacent à un prix précisé à l'avant (ce prix est appelé le {\em strike} ) (source: wikipedia.org)
+    Une \textbf{option call} est un produit dérivé, contrat entre deux parties, qui donne à l'acheteur le droit (le vendeur est en revanche tenu de se plier à la décision de l'acheteur) d'acheter une quantité donnée d'un actif sous-jacent à un prix précisé à l'avant (ce prix est appelé le {\em strike}) (source: wikipedia.org)
   \end{block}
   \pause
   On ne s'intéressera ici qu'aux options ayant une date d'échéance donnée, et où il n'est possible de les utiliser que le jour de la date d'échéance.
-  Dans la suite, on notera K le strike
+  Dans la suite, on notera K le strike. \\
   Enfin, on définit le \textbf{payoff} comme étant le rendement intrinsèque d'une option
 \end{frame}
-\begin{frame}{Option Call}{Exemple où l'on fait valoir l'option}
-  \includegraphics[width=12cm]{imgs/strike.png}
-\end{frame}
-\begin{frame}{Option Call}{Exemple où l'on ne fait pas valoir l'option}
-  \includegraphics[width=12cm]{imgs/nostrike.png}
-  \end{frame}
+
+\section{Mouvement brownien et processus stochastiques}
 \begin{frame}{Processus Stochastique}
   \begin{block}{Définition}
     On appelle processus stochastique la donnée
@@ -51,14 +72,6 @@
     \end{equation}
     où $ \varOmega $ est un ensemble, $ \mathcal{F} $ est une $\sigma$-algèbre sur $ \varOmega $, $\mathbb{P}$ est une mesure de probabilité sur $ \left( \varOmega , \mathcal{F} \right)$ et $T \subset \mathbb{R}^{+}$ (représente le temps).
     Enfin, $\left( X_{t} \right)_{t\in T} $  est une famille de variable aléatoire indexée par $ T $.
-  \end{block}
-\end{frame}
-\begin{frame}{Option Call}{Formule du pricing}
-  \begin{block}{Théorème fondamental du Pricing}
-    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, on voit bien que la valeur de l'option call sera de
-    \begin{equation} \label{tfp}
-      e^{-Tr}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
-    \end{equation}
   \end{block}
 \end{frame}
 \begin{frame}{Mouvement Brownien}
@@ -77,9 +90,10 @@
 %   \hfill
 %   \hfill \includegraphics<2>[width=7.5cm]{imgs/under.png}
 % \end{frame}
+\section{Le modèle de Black-Scholes}
 \begin{frame}{Le modèle de Black-Scholes}
   \begin{block}{Définition}
-    On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante pour M > 0
+    On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante pour $M > 0$
     \begin{equation}
       \begin{cases}
         dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{s} \\
@@ -98,45 +112,13 @@
   \pause
   Le but va donc maintenant être de définir cette intégrale
 \end{frame}
-% \begin{frame}{Présentation du modèle de Black-Scholes}
-%   \begin{block}{Le Modèle}
-%     On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante
-%     \begin{equation}
-%       \begin{cases}
-%         dX_{t} = \mu dt + \sigma dB_{s} \\
-%         X_{0} = 0
-%       \end{cases}
-%     \end{equation}
-%     Où $ \mu \in \mathbb{R}$, $ \sigma \in \mathbb{R^{+}} $, $ B_{s} $ représente le mouvement Brownien
-%   \end{block}
-% \end{frame}
-% %
-%\begin{frame}{Explication et représentation du problème}
-%   \includegraphics<2>[width=7.5cm]{imgs/overunder.png}
-%   \hfill
-%   \hfill \includegraphics<2>[width=7.5cm]{imgs/under.png}
-% \end{frame}
-% \begin{frame}{Revenir au problème de départ}
-%   On se remémore de l'équation
-%   \[
-%       \begin{cases}
-%         dX_{t} = \mu dt + \sigma dB_{s} \\
-%         X_{0} = 0
-%       \end{cases}
-%     \]
-%     dont on comprend maintenant les termes. \\
-%     Le but va donc être de comprendre ce processus de manière plus globale, il nous faut donc une intégrale de la forme
-%     \[
-%       I(f)(\omega) = \int_{0}^{T}f(\omega, t)dBt
-%     \]
-%   \end{frame}
-%   \begin{frame}{Représentation d'un $X_t$ résolvant cette équation avec $\mu=10, \sigma=1$}
-%    \includegraphics[width=10cm]{imgs/drift.png}
-%  \end{frame}
-
- \begin{frame}{Représentation de cinq $X_{t}$ résolvant cette équation}
+ \begin{frame}{Représentation de cinq $X_{t}$ résolvant Black-Scholes}{$\mu =0.1, \sigma =0.3$}
    \includegraphics[width=12cm]{imgs/bs5.png}
  \end{frame}
+ \begin{frame}{Représentation de cinq $X_{t}$ résolvant Black-Scholes}{$\mu =2, \sigma =0.3$}
+   \includegraphics[width=12cm]{imgs/mu2.png}
+ \end{frame}
+ \section{Construction de l'intégrale d'Itô}
  \begin{frame}{Construction de l'intégrale d'Itô}
    \begin{block}{Définition}<1->
      On définit $\mathcal{H}^{2}$ comme étant l'espace des fonctions mesurables et adaptées respectant la condition d'intégrabilité \\
@@ -145,7 +127,7 @@
      \]
    \end{block}
     \begin{block}{Propriété de base de l'intégrale}
-     On aimerait que notre intégrale aient les propriétés suivantes, \\
+     On aimerait que notre intégrale aie la propriété suivante, \\
 \iffalse [ [ \fi     D'abord, si $ f(\omega, t) = \1_{\left] a; b \right]} $ on aimerait
      \[
        I(f)(\omega) = \int_{a}^{b}f(\omega, t) dB_{t} = B_{b} - B_{a}
@@ -169,17 +151,17 @@
      \end{block}
      \pause
    En fait, comme $ \mathcal{H}^{2}_{0}$ est dense dans $\mathcal{H}^{2}$, on peut définir l'intégrale sur tout $\mathcal{H}^2$
-   \end{frame}
+ \end{frame}
+ \section{Lemme d'Itô}
    \begin{frame}{Lemme d'Itô}{Cas simple}
      \begin{block}{Lemme d'Itô}
-       Avec $f: \mathbb{R} \rightarrow \mathbb{R} $ est de classe $ \mathcal{C}^{2} $, alors
+       Avec $f: \mathbb{R} \rightarrow \mathbb{R} $ de classe $\mathcal{C}^{2} $, on a
        \begin{equation}
          f(B_{t}) = f(0) + \int_{0}^{t}f'(B_{S})dB_{S} + \frac{1}{2}\int_{0}^{t} f''(B_{s})ds
        \end{equation}
      \end{block}
      \pause
      On note la similarité entre cette équation et le théorème fondamental de l'analyse, à ceci près qu'une intégrale de la dérivée seconde de f s'invite dans l'équation
-     \pause
      \begin{block}{Lemme d'Itô, avec plusieurs variables}
        Soit $f\in \mathcal{C}^{1, 2}(\mathbb{R}^{+} \times \mathbb{R})$, on a
        \begin{equation}
@@ -257,7 +239,7 @@
      \begin{block}{Théorème}
        Dans le modèle de Black-Scholes, la valeur d'une option call est donné par la formule
        \begin{equation}
-         X_{0}\mathcal{N}(d_{1}) - Ke^{-rT}\mathcal{N}(d_{2})
+         X_{0}\varPhi(d_{1}) - Ke^{-rT}\varPhi(d_{2})
        \end{equation}
        où
        \[
@@ -268,5 +250,8 @@
          d_{2} = d_{1} - \sigma \sqrt{T}
        \]
     \end{block}
-   \end{frame}
+  \end{frame}
+  \begin{frame}{Merci!}
+    \includegraphics[width=12cm]{imgs/100b.png}
+  \end{frame}
 \end{document}
