@@ -40,6 +40,19 @@
 \end{frame}
 \section{Option Call}
 \begin{frame}{Option Call}
+  \begin{block}{Definition}
+    Une \textbf{option call} est un produit dérivé, contrat entre deux parties, qui donne à l'acheteur le droit (le vendeur est en revanche tenu de se plier à la décision de l'acheteur) d'acheter une quantité donnée d'un actif sous-jacent à un prix précisé à l'avance (ce prix est appelé le \textbf{strike}) (source: wikipedia.org)
+  \end{block}
+  \pause
+  \begin{itemize}
+  \item On ne s'intéressera ici qu'aux options ayant une date d'échéance donnée, et où il n'est possible de les utiliser que le jour de la date d'échéance.
+  \item Dans la suite, on notera K le \textbf{strike}.
+  \item Enfin, on définit le \textbf{payoff} comme étant le rendement intrinsèque d'une option
+    \item Une option call ne donne pas l'obligation à l'acheteur de faire valoir son option.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Option Call}
   \includegraphics[width=12cm]{imgs/strike.png}
 \end{frame}
 \begin{frame}{Option Call}
@@ -49,21 +62,23 @@
 \begin{block}{Théorème fondamental du Pricing}
     Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, on voit bien que la valeur de l'option call sera de
     \begin{equation} \label{tfp}
-      e^{-Tr}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
+      \underbrace{e^{-Tr}}_{\text{fact. d'actualisation}}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
     \end{equation}
   \end{block}
-  \end{frame}
-\begin{frame}{Option Call}
-  \begin{block}{Definition}
-    Une \textbf{option call} est un produit dérivé, contrat entre deux parties, qui donne à l'acheteur le droit (le vendeur est en revanche tenu de se plier à la décision de l'acheteur) d'acheter une quantité donnée d'un actif sous-jacent à un prix précisé à l'avant (ce prix est appelé le {\em strike}) (source: wikipedia.org)
-  \end{block}
-  \pause
-  On ne s'intéressera ici qu'aux options ayant une date d'échéance donnée, et où il n'est possible de les utiliser que le jour de la date d'échéance.
-  Dans la suite, on notera K le strike. \\
-  Enfin, on définit le \textbf{payoff} comme étant le rendement intrinsèque d'une option
 \end{frame}
-
-\section{Mouvement brownien et processus stochastiques}
+\begin{frame}{Option Call}{Actualisation}
+  Mettons nous dans une situation où j'achète une option effective dans 3 ans à 100€ et imaginons que l'on ne prenne pas en compte l'actualisation et donnons nous un taux d'intêrêt à 2\% par an
+  \pause
+  \begin{center}
+    \includegraphics[width=6cm]{imgs/interet.png}
+    \end{center}
+  \pause
+  La banque gagne donc environ 6€ sur mon achat
+\end{frame}
+\begin{frame}{Option Call}
+  \includegraphics[width=12cm]{imgs/strike.png}
+\end{frame}
+\section{Processus stochastiques et mouvement brownien}
 \begin{frame}{Processus Stochastique}
   \begin{block}{Définition}
     On appelle processus stochastique la donnée
@@ -86,17 +101,29 @@
     Le mouvement brownien est donc un type particulier de {\em marche aléatoire}.
 \end{frame}
 % \begin{frame}{Explication et représentation du problème}
-%   \includegraphics<2>[width=7.5cm]{imgs/overunder.png}
+%   \includegraphics<2>[width=7.5cm]{Kyotoimgs/overunder.png}
 %   \hfill
 %   \hfill \includegraphics<2>[width=7.5cm]{imgs/under.png}
 % \end{frame}
-\section{Le modèle de Black-Scholes}
-\begin{frame}{Le modèle de Black-Scholes}
+\section{Modèle de Black-Scholes}
+\begin{frame}{Modèle de Black-Scholes}{Mouvement Brownien Arithmétique}
+  \begin{block}{Définition}
+    Un processus brownien arihtmétique est un processus de la forme
+    \begin{equation}
+      dX_{t} = \mu dt + \sigma dB_{t}
+    \end{equation}
+    où $\mu$ représente le drift et $\sigma$ représente la variance.
+    \end{block}
+  \end{frame}
+  \begin{frame}{Modèle de Black-Scholes}{Influence des différents paramètres dans le mouvement brownien arithmétique}
+
+    \end{frame}
+\begin{frame}{Modèle de Black-Scholes}
   \begin{block}{Définition}
     On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante pour $M > 0$
     \begin{equation}
       \begin{cases}
-        dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{s} \\
+        dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{t} \\
         X_{0} = M
       \end{cases}
       \end{equation}
@@ -106,7 +133,7 @@
     \begin{alertblock}{}
     Le but va donc être de comprendre ce processus de manière plus globale, il nous faut donc une intégrale de la forme
     \[
-      \int_0^{T} dX_{t} = \int_0^{T} \mu X_{t} dt + \int_{0}^{T} \sigma X_{T} dB_{t}
+      X_{T} - X_{0} = \int_0^{T} \mu X_{t} dt + \int_{0}^{T} \sigma X_{T} dB_{t}
     \]
   \end{alertblock}
   \pause
@@ -126,14 +153,13 @@
        \mathbb{E}\left[\int_{0}^{T}f^{2}(\omega, t) dt \right] < \infty
      \]
    \end{block}
-    \begin{block}{Propriété de base de l'intégrale}
-     On aimerait que notre intégrale aie la propriété suivante, \\
-\iffalse [ [ \fi     D'abord, si $ f(\omega, t) = \1_{\left] a; b \right]} $ on aimerait
+   \begin{block}{Propriétés de base de l'intégrale}
+     Notre intégrale devrait être définie sur $\mathcal{H}^{2}$, celle-ci devrait être un opérateur linéaire, de plus
+\iffalse [ [ \fi  si $ f(\omega, t) = \1_{\left] a; b \right]} $ on aimerait
      \[
        I(f)(\omega) = \int_{a}^{b}f(\omega, t) dB_{t} = B_{b} - B_{a}
      \]
    \end{block}
-
  \end{frame}
  
  \begin{frame}{Définition de l'intégrale d'Itô sur $\mathcal{H}^2_0$}
