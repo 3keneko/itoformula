@@ -20,18 +20,18 @@ timesteps = 1000  # Number of time steps
 dt = 0.01         # Time step size
 
 # Generate three instances of Brownian motion
-t1, W1 = brownian_motion_var_and_drift(timesteps, dt, 1, 10)
-t2, W2 = brownian_motion_var_and_drift(timesteps, dt, 1, 10)
-t3, W3 = brownian_motion_var_and_drift(timesteps, dt, 1, 10)
+t1, W1 = brownian_motion_var_and_drift(timesteps, dt, 0, 100)
+t2, W2 = brownian_motion_var_and_drift(timesteps, dt, 3, 100)
+t3, W3 = brownian_motion_var_and_drift(timesteps, dt, 20, 100)
 
 # Plot the Brownian motion
 plt.figure(figsize=(10, 6))
 plt.plot(t1, W1, label='1')
-# plt.plot(t2, W2, label='2')
-# plt.plot(t3, W3, label='3')
+plt.plot(t2, W2, label='2')
+plt.plot(t3, W3, label='3')
 #plt.plot(t1, 0.2 * np.ones(timesteps), label="A")
 # Customize the plot
-# plt.title('Brownian Motion')
+plt.title('Arithmetic Brownian Motion with different parameters')
 plt.xlabel('Time')
 plt.ylabel('Value')
 plt.legend()

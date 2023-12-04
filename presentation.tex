@@ -45,9 +45,9 @@
   \end{block}
   \pause
   \begin{itemize}
-  \item On ne s'intéressera ici qu'aux options ayant une date d'échéance donnée, et où il n'est possible de les utiliser que le jour de la date d'échéance.
-  \item Dans la suite, on notera K le \textbf{strike}.
-  \item Enfin, on définit le \textbf{payoff} comme étant le rendement intrinsèque d'une option
+  \item L'option n'est utilisable que le jour de sa date d'expiration
+  \item On note K le \textbf{strike}.
+  \item Le \textbf{payoff} est le rendement intrinsèque d'une option
     \item Une option call ne donne pas l'obligation à l'acheteur de faire valoir son option.
   \end{itemize}
 \end{frame}
@@ -58,40 +58,55 @@
 \begin{frame}{Option Call}
   \includegraphics[width=12cm]{imgs/nostrike.png}
 \end{frame}
-\begin{frame}{Option Call}{Formule du pricing}
-\begin{block}{Théorème fondamental du Pricing}
-    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, on voit bien que la valeur de l'option call sera de
-    \begin{equation} \label{tfp}
-      \underbrace{e^{-Tr}}_{\text{fact. d'actualisation}}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
-    \end{equation}
-  \end{block}
-\end{frame}
 \begin{frame}{Option Call}{Actualisation}
-  Mettons nous dans une situation où j'achète une option effective dans 3 ans à 100€ et imaginons que l'on ne prenne pas en compte l'actualisation et donnons nous un taux d'intêrêt à 2\% par an
+  Mettons nous dans une situation où j'achète une option effective dans 25 ans à 100€ et imaginons que l'on ne prenne pas en compte l'actualisation et donnons nous un taux d'intêrêt à 2\% par an
   \pause
   \begin{center}
-    \includegraphics[width=6cm]{imgs/interet.png}
+    \includegraphics[width=6cm]{imgs/25ans.png}
     \end{center}
-  \pause
-  La banque gagne donc environ 6€ sur mon achat
+  La banque gagne donc environ 64€ sur mon achat
+\end{frame}
+\begin{frame}{Option Call}{Formule du pricing}
+\begin{block}{Théorème fondamental du Pricing}
+    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, la valeur de l'actif sera de
+    \begin{equation} \
+eabel{tfp}
+      \underbrace{e^{-Tr}}_{\text{fact. d'actualisation}}\mathbb{E}\left[ \text{Payoff} \right]
+    \end{equation}
+  \end{block}
 \end{frame}
 \begin{frame}{Option Call}
   \includegraphics[width=12cm]{imgs/strike.png}
 \end{frame}
+\begin{frame}{Option Call}{Formule du pricing}
+\begin{block}{Théorème fondamental du Pricing appliqué aux options}
+    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, la valeur de l'option sera
+    \begin{equation} \
+eabel{tfp}
+      \underbrace{e^{-Tr}}_{\text{fact. d'actualisation}}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
+    \end{equation}
+  \end{block}
+\end{frame}
 \section{Processus stochastiques et mouvement brownien}
 \begin{frame}{Processus Stochastique}
   \begin{block}{Définition}
-    On appelle processus stochastique la donnée
+    Soit $T \subseteq \mathbb{R}^{+}$ et soit $\mathcal{F}$ une $\sigma$-algèbre, $\mathbb{F}$ est une \textbf{filtration} de $\mathcal{F}$ si $\mathbb{F}$ est une famille de $\sigma$-algèbres de la forme $\left( \mathcal{F}_{t}\right)_{t\in T}$ telles que
+    \[
+      \mathcal{F}_{s} \subseteq \mathcal{F}_{t} \subseteq \mathcal{F}, \qquad \forall s \leq t
+    \]
+    \end{block}
+  \begin{block}{Définition}
+    On appelle processus stochastique adapté la donnée
     \begin{equation}
-      X = (\varOmega, \mathcal{F}, \left(  X_{t} \right)_{t\in T}, \mathbb{P})
+      X = (\varOmega, \mathcal{F}, \mathbb{F}, \left(  X_{t} \right)_{t\in T}, \mathbb{P})
     \end{equation}
-    où $ \varOmega $ est un ensemble, $ \mathcal{F} $ est une $\sigma$-algèbre sur $ \varOmega $, $\mathbb{P}$ est une mesure de probabilité sur $ \left( \varOmega , \mathcal{F} \right)$ et $T \subset \mathbb{R}^{+}$ (représente le temps).
-    Enfin, $\left( X_{t} \right)_{t\in T} $  est une famille de variable aléatoire indexée par $ T $.
+    où $ \varOmega $ est un ensemble, $ \mathcal{F} $ est une $\sigma$-algèbre sur $ \varOmega $, $\mathbb{P}$ est une mesure de probabilité sur $ \left( \varOmega , \mathcal{F} \right)$, $\mathbb{F}$ est une filtration et $T \subset \mathbb{R}^{+}$ représente le temps.
+    Enfin, $\left( X_{t} \right)_{t\in T} $  est une famille de variables aléatoires indexées par $ T $.
   \end{block}
 \end{frame}
 \begin{frame}{Mouvement Brownien}
   \begin{block}{Définition}
-    Un processus $ B = (\varOmega, \mathcal{F}, \left(  X_{t} \right)_{t\in T}, \mathbb{P} ) $ à valeurs réelles est un mouvement brownien si
+    Un processus $ B = (\varOmega, \mathcal{F}, \left(  \mathcal{F}_{t} \right)_{t\in T},\left(  B_{t} \right)_{t\in T}, \mathbb{P} ) $ à valeurs réelles est un mouvement brownien si
     \begin{subequations}
       \begin{equation} B_{0} = 0 \qquad \mathbb{P}-p.s \end{equation}
       \begin{equation} \forall s \in \left[0, t\right], \qquad B_{t} - B_{s} \indep \mathcal{F}_{s} \end{equation}
@@ -116,11 +131,11 @@
     \end{block}
   \end{frame}
   \begin{frame}{Modèle de Black-Scholes}{Influence des différents paramètres dans le mouvement brownien arithmétique}
-
-    \end{frame}
+    \includegraphics[width=12cm]{imgs/0320.png}
+  \end{frame}
 \begin{frame}{Modèle de Black-Scholes}
   \begin{block}{Définition}
-    On va choisir de modéliser le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante pour $M > 0$
+    On va choisir de modéliser le prix d'un actif sur le marché en utilisant le processus stochastique satisfaisant l'équation stochastique suivante pour $M > 0$
     \begin{equation}
       \begin{cases}
         dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{t} \\
@@ -148,7 +163,8 @@
  \section{Construction de l'intégrale d'Itô}
  \begin{frame}{Construction de l'intégrale d'Itô}
    \begin{block}{Définition}<1->
-     On définit $\mathcal{H}^{2}$ comme étant l'espace des fonctions mesurables et adaptées respectant la condition d'intégrabilité \\
+     Soit $T \in \mathbb{R}^{+}_{0}$, $\mathcal{B}$ les boréliens de $\left[0; T  \right]$ et $\left( \mathcal{F}_{t} \right)_{t\in T}$ une filtration naturelle de $B_{T}$.
+     On définit $\mathcal{H}^{2}$ comme étant l'espace des fonctions mesurables sur $F_{T} \otimes \mathcal{B}$, telles que pour tout $ t \in \left[0; T  \right], \omega \mapsto f(\omega, t)$ est mesurable sur $\mathcal{F}_{t}$ et respectant la condition d'intégrabilité \\
      \[
        \mathbb{E}\left[\int_{0}^{T}f^{2}(\omega, t) dt \right] < \infty
      \]
@@ -162,22 +178,47 @@
    \end{block}
  \end{frame}
  
- \begin{frame}{Définition de l'intégrale d'Itô sur $\mathcal{H}^2_0$}
+ \begin{frame}{Construction de l'intégrale d'Itô}{Définition de l'intégrale d'Itô sur $\mathcal{H}^2_0$}
       \begin{block}{Définition}
      On définit maintenant $\mathcal{H}^{2}_{0}$ comme le sous-ensemble des fonctions dans $\mathcal{H}^{2}$ telles que celles-ci soient de la forme \iffalse [[ \fi
      \[
-       f(\omega, t) = \sum_{i=0}^{n-1}a_{i}(\omega) \1_{\left] t_{i} ; t_{i+1} \right] }
+       \forall \omega \in [0; T], \qquad f(\omega, t) = \sum_{i=0}^{n-1}a_{i}(\omega) \1_{\left] t_{i} ; t_{i+1} \right] }
      \]
      \end{block}
      \begin{block}{Définition}<2->
        Soit $ f \in \mathcal{H}^{2}_{0} $ on va définir l'intégrale d'Itô comme étant
        \[
-         I(f)(\omega) = \sum_{i=0}^{n-1} a_{i}(\omega)\left( B_{t_{i+1}} - B_{t_{i}} \right)
+         \forall \omega \in [0; T], \qquad I(f)(\omega) = \sum_{i=0}^{n-1} a_{i}(\omega)\left( B_{t_{i+1}} - B_{t_{i}} \right)
        \]
      \end{block}
-     \pause
-   En fait, comme $ \mathcal{H}^{2}_{0}$ est dense dans $\mathcal{H}^{2}$, on peut définir l'intégrale sur tout $\mathcal{H}^2$
- \end{frame}
+   \end{frame}
+   \begin{frame}{Construction de l'intégrale d'Itô}{Lemme d'Isométrie d'Itô}
+     \begin{block}{Lemme d'isométrie d'Itô}
+       Soit $f \in \mathcal{H}_{0}^{2}$, alors on a
+       \[
+         \Vert I(f) \Vert_{L^{2}(dP)} = \Vert f \Vert_{L^{2}(dP \times dt)}
+       \]
+     \end{block}
+     \end{frame}
+     \begin{frame}{Construction de l'intégrale d'Itô}{Preuve du lemme d'isométrie}
+     \begin{block}{Preuve}
+       On calcule d'abord le membre de droite de l'équation, remarquons donc que
+       %
+       \iffalse [  \fi
+       \[
+       f ^{2}(\omega, t) = \sum_{i=0}^{n-1}a^{2}_{i} \1 _{\left( t_{i} ; t_{i+1} \right]}
+     \]
+     et donc
+     \[
+       \mathbb{E} \left[ \int_{0}^{T} f^{2} (\omega, t) dt \right] = \sum_{i=0}^{n-1} \mathbb{E}\left[  a^{2}_{i}\right] (t_{i+1} - t_i)
+     \]
+     Pour le membre de gauche de l'équation
+     \[
+       \mathbb{E}\left[ I(f)^{2} \right] = \sum_{i=0}^{n-1} E \left[a^{2}_{i}\right] (t_{i+1} - t_{i})
+     \]
+     Ceci conclut la preuve
+       \end{block}
+     \end{frame}
  \section{Lemme d'Itô}
    \begin{frame}{Lemme d'Itô}{Cas simple}
      \begin{block}{Lemme d'Itô}
@@ -258,7 +299,6 @@
      On reprend donc $ \ref{eq:9} $ pour voir que $X_{T} \sim \log \mathcal{N} \left( \left( \mu - \frac{\sigma^{2}}{2} \right) T; \sigma \sqrt{T}  \right)$ \\
      \pause
      Tout ce qu'il reste à faire est alors de calculer $\mathbb{E}\left[\max(X_{t} - K; 0)e^{-tr}\right]$ où $ X_{t}$ suit une log-normale.
-
    \end{frame}
    \begin{frame}{Formule de Black-Scholes}
      Nos calculs précédents nous donnent finalement la formule de Black-Scholes telle qu'étudiée en actuariat
