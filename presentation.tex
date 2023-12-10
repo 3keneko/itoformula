@@ -39,6 +39,11 @@
   \end{enumerate}
 \end{frame}
 \section{Option Call}
+\begin{frame}{Option Call}{Mise en situation}
+  \begin{center}
+    \includegraphics[width=3cm]{imgs/police.jpg}
+    \end{center}
+\end{frame}
 \begin{frame}{Option Call}
   \begin{block}{Definition}
     Une \textbf{option call} est un produit dérivé, contrat entre deux parties, qui donne à l'acheteur le droit (le vendeur est en revanche tenu de se plier à la décision de l'acheteur) d'acheter une quantité donnée d'un actif sous-jacent à un prix précisé à l'avance (ce prix est appelé le \textbf{strike}) (source: wikipedia.org)
@@ -68,9 +73,8 @@
 \end{frame}
 \begin{frame}{Option Call}{Formule du pricing}
 \begin{block}{Théorème fondamental du Pricing}
-    Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, la valeur de l'actif sera de
-    \begin{equation} \
-eabel{tfp}
+ Si $r$ représente le taux d'intérêt et T représente le temps, la valeur de l'obligation sera de
+    \begin{equation} \label{tfp}
       \underbrace{e^{-Tr}}_{\text{fact. d'actualisation}}\mathbb{E}\left[ \text{Payoff} \right]
     \end{equation}
   \end{block}
@@ -79,10 +83,9 @@ eabel{tfp}
   \includegraphics[width=12cm]{imgs/strike.png}
 \end{frame}
 \begin{frame}{Option Call}{Formule du pricing}
-\begin{block}{Théorème fondamental du Pricing appliqué aux options}
+\begin{block}{Théorème fondamental du Pricing appliqué aux options call}
     Si $X_T$  représente le prix de l'actif sous-jacent au temps $T$, et si $r$ représente le taux d'intérêt, la valeur de l'option sera
-    \begin{equation} \
-eabel{tfp}
+    \begin{equation} \label{tfp}
       \underbrace{e^{-Tr}}_{\text{fact. d'actualisation}}\mathbb{E}\left[ \max \left(X_{T} - K; 0 \right) \right]
     \end{equation}
   \end{block}
@@ -103,6 +106,9 @@ eabel{tfp}
     où $ \varOmega $ est un ensemble, $ \mathcal{F} $ est une $\sigma$-algèbre sur $ \varOmega $, $\mathbb{P}$ est une mesure de probabilité sur $ \left( \varOmega , \mathcal{F} \right)$, $\mathbb{F}$ est une filtration et $T \subset \mathbb{R}^{+}$ représente le temps.
     Enfin, $\left( X_{t} \right)_{t\in T} $  est une famille de variables aléatoires indexées par $ T $.
   \end{block}
+\end{frame}
+\begin{frame}{Exemple de processus stochastique}
+  \includegraphics[width=12cm]{imgs/bern.png}
 \end{frame}
 \begin{frame}{Mouvement Brownien}
   \begin{block}{Définition}
@@ -127,7 +133,7 @@ eabel{tfp}
     \begin{equation}
       dX_{t} = \mu dt + \sigma dB_{t}
     \end{equation}
-    où $\mu$ représente le drift et $\sigma$ représente la variance.
+    où $\mu$ représente le drift et $\sigma$ représente la volatilitéé.
     \end{block}
   \end{frame}
   \begin{frame}{Modèle de Black-Scholes}{Influence des différents paramètres dans le mouvement brownien arithmétique}
@@ -148,7 +154,7 @@ eabel{tfp}
     \begin{alertblock}{}
     Le but va donc être de comprendre ce processus de manière plus globale, il nous faut donc une intégrale de la forme
     \[
-      X_{T} - X_{0} = \int_0^{T} \mu X_{t} dt + \int_{0}^{T} \sigma X_{T} dB_{t}
+      X_{T} - X_{0} = \int_0^{T} \mu X_{t} dt + \int_{0}^{T} \sigma X_{t} dB_{t}
     \]
   \end{alertblock}
   \pause
@@ -162,29 +168,23 @@ eabel{tfp}
  \end{frame}
  \section{Construction de l'intégrale d'Itô}
  \begin{frame}{Construction de l'intégrale d'Itô}
-   \begin{block}{Définition}<1->
-     Soit $T \in \mathbb{R}^{+}_{0}$, $\mathcal{B}$ les boréliens de $\left[0; T  \right]$ et $\left( \mathcal{F}_{t} \right)_{t\in T}$ une filtration naturelle de $B_{T}$.
-     On définit $\mathcal{H}^{2}$ comme étant l'espace des fonctions mesurables sur $F_{T} \otimes \mathcal{B}$, telles que pour tout $ t \in \left[0; T  \right], \omega \mapsto f(\omega, t)$ est mesurable sur $\mathcal{F}_{t}$ et respectant la condition d'intégrabilité \\
+   \begin{block}{Définition}
+     Soit $ T \in \mathbb{R}^{+}$, $\mathcal{B}$ les boréliens de $ \left[0; T  \right]$, et soit $ (\mathcal{F}_{t})_{t \geq 0}$ la filtration du mouvement brownien. On définit $\mathcal{H}^{2}_{0}$ comme l'ensemble des fonctions mesurables sur $\mathcal{B} \otimes \mathcal{F}$ telles que celles-ci soient de la forme \iffalse [[ \fi
      \[
-       \mathbb{E}\left[\int_{0}^{T}f^{2}(\omega, t) dt \right] < \infty
+       \forall \omega \in [0; T], \qquad f(\omega, t) = \sum_{i=0}^{n-1}a_{i}(\omega) \1_{\left] t_{i} ; t_{i+1} \right] }
      \]
-   \end{block}
-   \begin{block}{Propriétés de base de l'intégrale}
-     Notre intégrale devrait être définie sur $\mathcal{H}^{2}$, celle-ci devrait être un opérateur linéaire, de plus
-\iffalse [ [ \fi  si $ f(\omega, t) = \1_{\left] a; b \right]} $ on aimerait
+     avec $a_{i} \in \mathcal{F}_{t_{i}}$, $\mathbb{E}\left[ a_{i}^{2} \right] < \infty$ et $0 = t_{1} < t_{2} < \cdots < t_{n} = T$
+     \end{block}
+    \end{frame}
+ 
+    \begin{frame}{Construction de l'intégrale d'Itô}{Définition de l'intégrale d'Itô sur $\mathcal{H}^2_0$}<1->
+      \begin{block}{Propriétés de base de l'intégrale}
+        Notre intégrale devrait être définie sur $\mathcal{H}^{2}_{0}$, celle-ci devrait être un opérateur linéaire, de plus
+     \iffalse [ [ \fi  si $ f(\omega, t) = \1_{\left] a; b \right]} $ on aimerait
      \[
        I(f)(\omega) = \int_{a}^{b}f(\omega, t) dB_{t} = B_{b} - B_{a}
      \]
    \end{block}
- \end{frame}
- 
- \begin{frame}{Construction de l'intégrale d'Itô}{Définition de l'intégrale d'Itô sur $\mathcal{H}^2_0$}
-      \begin{block}{Définition}
-     On définit maintenant $\mathcal{H}^{2}_{0}$ comme le sous-ensemble des fonctions dans $\mathcal{H}^{2}$ telles que celles-ci soient de la forme \iffalse [[ \fi
-     \[
-       \forall \omega \in [0; T], \qquad f(\omega, t) = \sum_{i=0}^{n-1}a_{i}(\omega) \1_{\left] t_{i} ; t_{i+1} \right] }
-     \]
-     \end{block}
      \begin{block}{Définition}<2->
        Soit $ f \in \mathcal{H}^{2}_{0} $ on va définir l'intégrale d'Itô comme étant
        \[
@@ -200,24 +200,34 @@ eabel{tfp}
        \]
      \end{block}
      \end{frame}
-     \begin{frame}{Construction de l'intégrale d'Itô}{Preuve du lemme d'isométrie}
+    \begin{frame}{Construction de l'intégrale d'Itô}{Preuve du lemme d'isométrie}
      \begin{block}{Preuve}
        On calcule d'abord le membre de droite de l'équation, remarquons donc que
-       %
        \iffalse [  \fi
        \[
        f ^{2}(\omega, t) = \sum_{i=0}^{n-1}a^{2}_{i} \1 _{\left( t_{i} ; t_{i+1} \right]}
      \]
      et donc
+
      \[
-       \mathbb{E} \left[ \int_{0}^{T} f^{2} (\omega, t) dt \right] = \sum_{i=0}^{n-1} \mathbb{E}\left[  a^{2}_{i}\right] (t_{i+1} - t_i)
+      \Vert f \Vert _{L^{2}(dP \times dt)} =\mathbb{E} \left[ \int_{0}^{T} f^{2} (\omega, t) dt \right] = \sum_{i=0}^{n-1} \mathbb{E}\left[  a^{2}_{i}\right] (t_{i+1} - t_i)
      \]
      Pour le membre de gauche de l'équation
      \[
-       \mathbb{E}\left[ I(f)^{2} \right] = \sum_{i=0}^{n-1} E \left[a^{2}_{i}\right] (t_{i+1} - t_{i})
+       \Vert I(f) \Vert _{L^{2}(dP)} = \mathbb{E}\left[ I(f)^{2} \right] = \sum_{i=0}^{n-1} E \left[a^{2}_{i}\right] (t_{i+1} - t_{i})
      \]
      Ceci conclut la preuve
        \end{block}
+     \end{frame}
+     \begin{frame}{Construction de l'intégrale d'Itô}
+   \begin{block}{Définition}<1->
+     Soit $T \in \mathbb{R}^{+}_{0}$, $\mathcal{B}$ les boréliens de $\left[0; T  \right]$ et $\left( \mathcal{F}_{t} \right)_{t\in T}$ une filtration naturelle de $B_{T}$.
+     On définit $\mathcal{H}^{2}$ comme étant l'espace des fonctions mesurables sur $F_{T} \otimes \mathcal{B}$, telles que pour tout $ t \in \left[0; T  \right], \omega \mapsto f(\omega, t)$ est mesurable sur $\mathcal{F}_{t}$ et respectant la condition d'intégrabilité \\
+     \[
+       \mathbb{E}\left[\int_{0}^{T}f^{2}(\omega, t) dt \right] < \infty
+     \]
+   \end{block}
+
      \end{frame}
  \section{Lemme d'Itô}
    \begin{frame}{Lemme d'Itô}{Cas simple}
@@ -227,24 +237,57 @@ eabel{tfp}
          f(B_{t}) = f(0) + \int_{0}^{t}f'(B_{S})dB_{S} + \frac{1}{2}\int_{0}^{t} f''(B_{s})ds
        \end{equation}
      \end{block}
-     \pause
-     On note la similarité entre cette équation et le théorème fondamental de l'analyse, à ceci près qu'une intégrale de la dérivée seconde de f s'invite dans l'équation
-     \begin{block}{Lemme d'Itô, avec plusieurs variables}
+     \end{frame}
+     \begin{frame}{Lemme d'Itô}{Application}
+       Calculons $ \int_{0}^{t} B_{s}dB_{s}$.
+       \pause
+       Posons
+       \[
+         f: x \mapsto \frac{x^{2}}{2}
+       \]
+       \pause
+       appliquer le lemme d'Itô à f donne pour $ t \in \mathbb{R}^{+}$
+       \begin{align}
+         \int_{0}^{t}f'(B_{s})dB_{s} &= f(0) - f(B_{t}) + \int_{0}^{t} f''(B_{s}) ds \\
+         &= - \frac{B_{t}^{2}}{2} + t
+       \end{align}
+       \pause
+       Et donc
+       \[
+         \int_{0}^{t}B_{s}dB_{s} = - \frac{B_{t}^{2}}{2} + t
+       \]
+     \end{frame}
+     \begin{frame}{Lemme d'Itô}{Plusieurs variables}
+     \begin{block}{Lemme d'Itô, avec plusieurs variables}<1->
        Soit $f\in \mathcal{C}^{1, 2}(\mathbb{R}^{+} \times \mathbb{R})$, on a
        \begin{equation}
-           f(t, B_{t}) = f(0, 0) + \int_{0}^{t}\frac{\partial f}{\partial x}(s, B_{s}) dB_{s} + \int_{0}^{t}\frac{\partial f}{\partial t}(s, B_{s}) ds + \frac{1}{2} \int_{0}^{t}\frac{\partial ^{2} f}{\partial x^{2}}(s, B_{s})
+           f(t, B_{t}) = f(0, 0) + \int_{0}^{t}\frac{\partial f}{\partial x}(s, B_{s}) dB_{s} + \int_{0}^{t}\frac{\partial f}{\partial t}(s, B_{s}) ds + \frac{1}{2} \int_{0}^{t}\frac{\partial ^{2} f}{\partial x^{2}}(s, B_{s}) ds
          \end{equation}
          \end{block}
-     \end{frame}
-     \begin{frame}{Lemme d'Itô, notation Shorthand}
-       \begin{block}{Lemme d'Itô (notation)}
+       \begin{block}{Lemme d'Itô (notation)}<2->
          Soit $f\in \mathcal{C}^{1, 2}(\mathbb{R}^{+} \times \mathbb{R})$, et $ X_{t} = f(t, B_{t})$ un processus stochastique, on écrira
          \begin{equation}
            dX_{t} = \frac{\partial f}{\partial x}(t, B_{t}) dB_{t} + \frac{\partial f}{\partial t}(t, B_{t}) dt + \frac{1}{2} \frac{\partial^{2}f}{\partial x^{2}}(t, B_{t}) dt
          \end{equation}
        \end{block}
      \end{frame}
-     \begin{frame}{Lemme d'Itô}{Box-Calculus}
+   \begin{frame}{Lemme d'Itô}{Application à Black-Scholes}
+     On reprend notre équation stochastique de Black-Scholes
+     \begin{equation}
+       dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{t}
+     \end{equation}
+     \pause
+     et on s'intéresse à $d \ln X_{t}$ en y appliquant la formule d'Itô
+     \[
+       d \ln X_{t} = \frac{1}{X_{t}} dX_{t} - \frac{1}{2X^{2}_{t}} dX_{t} \cdot dX_{t}
+     \]
+     \pause
+     En développpant $dX_{t}$ on trouve
+     \[
+       d \ln X_{t} = \frac{1}{X_{t}} \left( \mu X_{t} dt + \sigma X_{t} dB_{t} \right) - \frac{1}{2X_{t}^{2}} \left( \mu X_{t} dt + \sigma X_{t} dB_{t} \right) \left( \mu X_{t}dt + \sigma X_{t} dB_{t}\right)
+     \]
+     \end{frame}
+    \begin{frame}{Lemme d'Itô}{Box-Calculus}
        \begin{block}{Box-Calculus}
          \begin{center}
            \begin{tabular}{|c|c|c|}
@@ -258,23 +301,15 @@ eabel{tfp}
          \end{center}
          \end{block}
        \end{frame}
-   \begin{frame}{Lemme d'Itô}{Application à Black-Scholes}
-     On reprend notre équation stochastique de Black-Scholes
-     \begin{equation}
-       dX_{t} = \mu X_{t} dt + \sigma X_{t} dB_{s}
-     \end{equation}
-     \pause
-     et on s'intéresse à $d \ln X_{t}$ en y appliquant la formule d'Itô
-     \[
+       \begin{frame}{Lemme d'Itô}{Application à Black-Scholes (suite)}
+    \[
        d \ln X_{t} = \frac{1}{X_{t}} \left( \mu X_{t} dt + \sigma X_{t} dB_{t} \right) - \frac{1}{2X_{t}^{2}} \left( \mu X_{t} dt + \sigma X_{t} dB_{t} \right) \left( \mu X_{t}dt + \sigma X_{t} dB_{t}\right)
      \]
      \pause
-     ensuite, en appliquant le Box-Calculus, on voit qu'il est possible de simplifier cette dernière expression
-     \begin{equation}
+     En appliquant le Box-Calculus, on simplifie notre dernière expression
+    \[
        d \ln X_{t} =  \mu dt + \sigma dB_{t} - \frac{\sigma^{2}}{2} dt
-     \end{equation}
-   \end{frame}
-   \begin{frame}{Lemme d'Itô}{Application à Black-Scholes (suite)}
+     \]
      \[
        d \ln X_{t} = \left( \mu - \frac{\sigma^{2}}{2} \right) dt + \sigma dB_{t}
      \]
@@ -285,14 +320,15 @@ eabel{tfp}
      \]
      \pause
      \[
-       \ln \left(\frac{X_{t}}{X_{0}} \right) = \left( \mu - \frac{\sigma^{2}}{2} \right) T + \sigma B_{T}
+       \ln \left(\frac{X_{T}}{X_{0}} \right) = \left( \mu - \frac{\sigma^{2}}{2} \right) T + \sigma B_{T}
      \]
-     \pause
-     \begin{equation} \label{eq:9}
-       X_{t} = \exp \left(  \left( \mu - \frac{\sigma^{2}}{2} \right) T + \sigma B_{T} \right)
-     \end{equation}
-   \end{frame}
+        \end{frame}
    \begin{frame}{Lemme d'Itô}{Déduction de la formule de Black-Scholes}
+\begin{equation} \label{eq:9}
+       X_{T} = \exp \left(  \left( \mu - \frac{\sigma^{2}}{2} \right) T + \sigma B_{T} \right)
+     \end{equation}
+
+     \pause
      \begin{block}{Définition}
        Soit $Z \sim \mathcal{N}\left(0, 1 \right)$, et soient $\mu \in \mathbb{R}$ et $\sigma \in \mathbb{R}^{+}$, alors la variable définie par $ X = e^{\mu + \sigma Z}$ suit une loi log-normale.
      \end{block}
@@ -316,6 +352,9 @@ eabel{tfp}
          d_{2} = d_{1} - \sigma \sqrt{T}
        \]
     \end{block}
+  \end{frame}
+  \begin{frame}{Application au problème de départ}
+    On analyse le marché, et on trouve $ \sigma = 0.3$ ainsi que $ \mu = 0$, de plus le taux d'intérêt sans risque est à $r = 0.02$ appliquer Black-Scholes nous donne finalement que l'option a une valeur de $8.91€$€
   \end{frame}
   \begin{frame}{Merci!}
     \includegraphics[width=12cm]{imgs/100b.png}
